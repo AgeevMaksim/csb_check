@@ -1,0 +1,1730 @@
+<!DOCTYPE html>
+
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Чек-лист ЦСБ — контроль срезки с цементного моста</title>
+
+<style>
+
+/* =========================================================
+   ОСНОВНЫЕ НАСТРОЙКИ
+========================================================= */
+
+* {
+    box-sizing: border-box;
+}
+
+html,
+body {
+    margin: 0;
+    padding: 0;
+    background: #f2f4f6;
+    font-family: Arial, Helvetica, sans-serif;
+    color: #1f2933;
+    font-size: 13px;
+}
+
+body {
+    padding: 12px;
+}
+
+.page {
+    width: 100%;
+    max-width: 1400px;
+    margin: 0 auto;
+    background: #ffffff;
+    padding: 14px;
+}
+
+
+/* =========================================================
+   ЗАГОЛОВОК
+========================================================= */
+
+.header {
+    margin-bottom: 10px;
+}
+
+.header h1 {
+    margin: 0;
+    font-size: 21px;
+    line-height: 1.15;
+    font-weight: 800;
+    color: #263238;
+    text-transform: uppercase;
+}
+
+
+/* =========================================================
+   КОМПАКТНАЯ ШАПКА
+========================================================= */
+
+.info-box {
+    border: 1px solid #aeb9c2;
+    margin-bottom: 9px;
+}
+
+.info-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+}
+
+.info-cell {
+    min-height: 39px;
+    padding: 5px 7px;
+    border-right: 1px solid #c4cbd0;
+    border-bottom: 1px solid #c4cbd0;
+}
+
+.info-cell:nth-child(4n) {
+    border-right: none;
+}
+
+.info-cell:nth-last-child(-n+4) {
+    border-bottom: none;
+}
+
+.info-label {
+    display: block;
+    font-size: 10px;
+    line-height: 1.1;
+    font-weight: 700;
+    color: #53636d;
+    margin-bottom: 3px;
+}
+
+.info-input {
+    width: 100%;
+    border: none;
+    border-bottom: 1px solid #89959d;
+    outline: none;
+    padding: 1px 2px;
+    background: transparent;
+    font-size: 12px;
+    font-weight: 600;
+    color: #172027;
+}
+
+.info-input:focus {
+    border-bottom: 2px solid #41697d;
+}
+
+
+/* =========================================================
+   ПРИНЦИП КОНТРОЛЯ
+========================================================= */
+
+.principle {
+    border-left: 5px solid #41697d;
+    background: #f4f7f9;
+    padding: 7px 10px;
+    margin-bottom: 9px;
+    font-size: 11px;
+    line-height: 1.3;
+}
+
+.principle strong {
+    font-weight: 800;
+}
+
+
+/* =========================================================
+   ПАНЕЛЬ КНОПОК
+========================================================= */
+
+.toolbar {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-bottom: 9px;
+}
+
+button {
+    border: 1px solid #71808a;
+    background: #ffffff;
+    color: #263238;
+    padding: 6px 12px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 12px;
+    font-weight: 700;
+}
+
+button:hover {
+    background: #eef3f5;
+}
+
+button.primary {
+    background: #41697d;
+    color: #ffffff;
+    border-color: #41697d;
+}
+
+
+/* =========================================================
+   ТАБЛИЦА ЧЕК-ЛИСТА
+========================================================= */
+
+.table-wrap {
+    width: 100%;
+    overflow-x: auto;
+}
+
+.checklist {
+    width: 100%;
+    border-collapse: collapse;
+    table-layout: fixed;
+    font-size: 11px;
+}
+
+.checklist th {
+    background: #e7ecef;
+    border: 1px solid #6f777c;
+    padding: 5px 4px;
+    text-align: center;
+    vertical-align: middle;
+    font-weight: 800;
+    line-height: 1.15;
+}
+
+.checklist td {
+    border: 1px solid #737b80;
+    padding: 5px 5px;
+    vertical-align: top;
+    line-height: 1.18;
+    overflow-wrap: anywhere;
+}
+
+.checklist tbody tr {
+    page-break-inside: avoid;
+    break-inside: avoid;
+}
+
+.checklist .num {
+    text-align: center;
+    font-size: 13px;
+    font-weight: 800;
+    vertical-align: middle;
+}
+
+.checklist .point {
+    font-weight: 700;
+}
+
+.checklist .criteria {
+    font-size: 10.5px;
+}
+
+.checklist .action {
+    font-size: 10.5px;
+}
+
+.checklist .notes-cell {
+    padding: 3px;
+}
+
+.notes {
+    width: 100%;
+    min-height: 58px;
+    resize: vertical;
+    border: none;
+    outline: none;
+    background: transparent;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 10px;
+    line-height: 1.2;
+    color: #1f2933;
+}
+
+.notes:focus {
+    background: #f8fafb;
+}
+
+
+/* =========================================================
+   СТАТУС
+========================================================= */
+
+.status {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+}
+
+.status label {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 10px;
+    white-space: nowrap;
+}
+
+.status input[type="checkbox"] {
+    width: 15px;
+    height: 15px;
+    margin: 0;
+    cursor: pointer;
+}
+
+
+/* =========================================================
+   ЗАКЛЮЧЕНИЕ
+========================================================= */
+
+.summary {
+    margin-top: 9px;
+    border: 1px solid #9aa5ad;
+}
+
+.summary-title {
+    background: #e7ecef;
+    padding: 6px 8px;
+    font-size: 11px;
+    font-weight: 800;
+}
+
+.summary-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+}
+
+.summary-cell {
+    min-height: 54px;
+    padding: 6px;
+    border-right: 1px solid #b8c0c5;
+}
+
+.summary-cell:last-child {
+    border-right: none;
+}
+
+.summary-label {
+    display: block;
+    font-size: 9px;
+    font-weight: 700;
+    color: #5b6870;
+    margin-bottom: 4px;
+}
+
+.summary textarea {
+    width: 100%;
+    min-height: 38px;
+    border: none;
+    outline: none;
+    resize: vertical;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 10px;
+}
+
+
+/* =========================================================
+   ПРИНЦИП КОНТРОЛЯ — НИЖНИЙ БЛОК
+========================================================= */
+
+.footer-principle {
+    margin-top: 7px;
+    font-size: 9.5px;
+    color: #4f5c64;
+    line-height: 1.25;
+}
+
+
+/* =========================================================
+   АДАПТАЦИЯ ЭКРАНА
+========================================================= */
+
+@media (max-width: 900px) {
+
+    body {
+        padding: 5px;
+    }
+
+    .page {
+        padding: 8px;
+    }
+
+    .info-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .info-cell:nth-child(4n) {
+        border-right: 1px solid #c4cbd0;
+    }
+
+    .info-cell:nth-child(2n) {
+        border-right: none;
+    }
+
+    .info-cell:nth-last-child(-n+4) {
+        border-bottom: 1px solid #c4cbd0;
+    }
+
+    .info-cell:nth-last-child(-n+2) {
+        border-bottom: none;
+    }
+
+    .summary-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .summary-cell {
+        border-right: none;
+        border-bottom: 1px solid #b8c0c5;
+    }
+
+    .summary-cell:last-child {
+        border-bottom: none;
+    }
+}
+
+
+/* =========================================================
+   ПЕЧАТЬ / PDF — A4 LANDSCAPE
+========================================================= */
+
+@page {
+    size: A4 landscape;
+    margin: 6mm;
+}
+
+@media print {
+
+    html,
+    body {
+        width: 100%;
+        height: auto;
+        margin: 0;
+        padding: 0;
+        background: #ffffff;
+        font-size: 8px;
+    }
+
+    body {
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+    }
+
+    .page {
+        width: 100%;
+        max-width: none;
+        margin: 0;
+        padding: 0;
+        background: #ffffff;
+    }
+
+    .toolbar {
+        display: none !important;
+    }
+
+    .header {
+        margin-bottom: 4px;
+    }
+
+    .header h1 {
+        font-size: 15px;
+        line-height: 1.05;
+        margin-bottom: 4px;
+    }
+
+    /* -------------------------
+       ШАПКА
+    ------------------------- */
+
+    .info-box {
+        margin-bottom: 4px;
+        border: 0.7px solid #8c969d;
+    }
+
+    .info-cell {
+        min-height: 26px;
+        padding: 3px 5px;
+    }
+
+    .info-label {
+        font-size: 7px;
+        margin-bottom: 1px;
+    }
+
+    .info-input {
+        font-size: 8px;
+        height: 12px;
+        padding: 0;
+    }
+
+    /* -------------------------
+       ПРИНЦИП
+    ------------------------- */
+
+    .principle {
+        border-left-width: 3px;
+        padding: 4px 6px;
+        margin-bottom: 4px;
+        font-size: 7.2px;
+        line-height: 1.15;
+    }
+
+    /* -------------------------
+       ТАБЛИЦА
+    ------------------------- */
+
+    .table-wrap {
+        width: 100%;
+        overflow: visible;
+    }
+
+    .checklist {
+        width: 100%;
+        min-width: 0;
+        table-layout: fixed;
+        font-size: 7px;
+    }
+
+    .checklist th {
+        padding: 3px 2px;
+        font-size: 7px;
+        line-height: 1.05;
+        border-width: 0.7px;
+    }
+
+    .checklist td {
+        padding: 3px 3px;
+        font-size: 7px;
+        line-height: 1.08;
+        border-width: 0.7px;
+    }
+
+    .checklist .num {
+        font-size: 8px;
+    }
+
+    .checklist .criteria,
+    .checklist .action {
+        font-size: 6.7px;
+    }
+
+    .status {
+        gap: 1px;
+    }
+
+    .status label {
+        gap: 2px;
+        font-size: 6.7px;
+        line-height: 1;
+    }
+
+    .status input[type="checkbox"] {
+        width: 9px;
+        height: 9px;
+        margin: 0;
+    }
+
+    .notes {
+        min-height: 34px;
+        height: 34px;
+        font-size: 6.5px;
+        line-height: 1.05;
+    }
+
+    /* -------------------------
+       ЗАКЛЮЧЕНИЕ
+    ------------------------- */
+
+    .summary {
+        margin-top: 4px;
+    }
+
+    .summary-title {
+        padding: 3px 5px;
+        font-size: 7px;
+    }
+
+    .summary-cell {
+        min-height: 35px;
+        padding: 4px;
+    }
+
+    .summary-label {
+        font-size: 6.5px;
+        margin-bottom: 2px;
+    }
+
+    .summary textarea {
+        min-height: 22px;
+        height: 22px;
+        font-size: 6.5px;
+        line-height: 1;
+    }
+
+    .footer-principle {
+        margin-top: 3px;
+        font-size: 6.2px;
+        line-height: 1.05;
+    }
+
+    thead {
+        display: table-header-group;
+    }
+
+    tbody {
+        page-break-inside: avoid;
+        break-inside: avoid;
+    }
+
+    tr {
+        page-break-inside: avoid;
+        break-inside: avoid;
+    }
+
+    .table-wrap {
+        page-break-inside: avoid;
+        break-inside: avoid;
+    }
+}
+
+
+/* =========================================================
+   ФИКСИРОВАННЫЕ ШИРИНЫ КОЛОНОК
+========================================================= */
+
+.col-num {
+    width: 4%;
+}
+
+.col-point {
+    width: 14%;
+}
+
+.col-check {
+    width: 18%;
+}
+
+.col-criteria {
+    width: 21%;
+}
+
+.col-status {
+    width: 10%;
+}
+
+.col-action {
+    width: 17%;
+}
+
+.col-notes {
+    width: 16%;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div class="page">
+
+```
+<!-- =====================================================
+     ЗАГОЛОВОК
+====================================================== -->
+
+<div class="header">
+    <h1>ЧЕК-ЛИСТ ЦСБ — КОНТРОЛЬ СРЕЗКИ С ЦЕМЕНТНОГО МОСТА</h1>
+</div>
+
+
+<!-- =====================================================
+     КОМПАКТНАЯ ШАПКА
+====================================================== -->
+
+<div class="info-box">
+
+    <div class="info-grid">
+
+        <div class="info-cell">
+            <span class="info-label">Скважина</span>
+            <input class="info-input" type="text" value="">
+        </div>
+
+        <div class="info-cell">
+            <span class="info-label">Куст / объект</span>
+            <input class="info-input" type="text" value="">
+        </div>
+
+        <div class="info-cell">
+            <span class="info-label">Дата</span>
+            <input class="info-input" type="text" placeholder="дд.мм.гггг">
+        </div>
+
+        <div class="info-cell">
+            <span class="info-label">Смена</span>
+            <input class="info-input" type="text" value="">
+        </div>
+
+
+        <div class="info-cell">
+            <span class="info-label">Интервал срезки</span>
+            <input class="info-input" type="text" value="1800–1820 м">
+        </div>
+
+        <div class="info-cell">
+            <span class="info-label">Плановый угол, °</span>
+            <input class="info-input" type="text" value="19.28">
+        </div>
+
+        <div class="info-cell">
+            <span class="info-label">Плановый истинный азимут, °</span>
+            <input class="info-input" type="text" value="226.54">
+        </div>
+
+        <div class="info-cell">
+            <span class="info-label">GTF, °</span>
+            <input class="info-input" type="text" value="160">
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- =====================================================
+     ПРИНЦИП КОНТРОЛЯ
+====================================================== -->
+
+<div class="principle">
+
+    <strong>Принцип контроля:</strong>
+    ЦСБ не дублирует оперативные действия ТНГ-Групп и не управляет каждым вращением/проходкой.
+    Контроль выполняется по контрольным точкам: фактический результат, направление расхождения,
+    подтверждение выхода из материнского ствола, прогноз и решение о переходе на следующий режим.
+    При штатном ходе работ контроль не должен создавать дополнительного НПВ.
+
+</div>
+
+
+<!-- =====================================================
+     ПАНЕЛЬ УПРАВЛЕНИЯ
+====================================================== -->
+
+<div class="toolbar">
+
+    <button class="primary" onclick="save()">
+        💾 Сохранить
+    </button>
+
+    <button onclick="window.print()">
+        🖨 Печать / PDF
+    </button>
+
+    <button onclick="exportNotes()">
+        📄 Экспорт примечаний
+    </button>
+
+    <button onclick="clearForm()">
+        🗑 Очистить
+    </button>
+
+</div>
+
+
+<!-- =====================================================
+     ОСНОВНОЙ ЧЕК-ЛИСТ
+====================================================== -->
+
+<div class="table-wrap">
+
+    <table class="checklist">
+
+        <colgroup>
+            <col class="col-num">
+            <col class="col-point">
+            <col class="col-check">
+            <col class="col-criteria">
+            <col class="col-status">
+            <col class="col-action">
+            <col class="col-notes">
+        </colgroup>
+
+        <thead>
+            <tr>
+                <th>№</th>
+                <th>Контрольная точка</th>
+                <th>Что проверяет ЦСБ</th>
+                <th>Критерий / признак</th>
+                <th>Статус</th>
+                <th>Действие ЦСБ</th>
+                <th>Примечание / факт</th>
+            </tr>
+        </thead>
+
+        <tbody>
+
+
+            <!-- =================================================
+                 1
+            ================================================== -->
+
+            <tr>
+
+                <td class="num">1</td>
+
+                <td class="point">
+                    После установки моста
+                </td>
+
+                <td>
+                    Исходные данные программы,
+                    текущий забой, положение цементного
+                    моста, плановая траектория.
+                </td>
+
+                <td class="criteria">
+                    Данные согласованы и пригодны для контроля.
+                    Проверить расхождение: фактический забой
+                    1165 м и цементный мост 1750–1800 м.
+                </td>
+
+                <td>
+                    <div class="status">
+                        <label>
+                            <input type="checkbox">
+                            Штатно
+                        </label>
+                        <label>
+                            <input type="checkbox">
+                            Внимание
+                        </label>
+                        <label>
+                            <input type="checkbox">
+                            Критическое
+                        </label>
+                    </div>
+                </td>
+
+                <td class="action">
+                    Подтвердить готовность либо передать
+                    замечание ответственным лицам.
+                </td>
+
+                <td class="notes-cell">
+                    <textarea class="notes"
+                        placeholder="Факт, замечания, источник данных..."></textarea>
+                </td>
+
+            </tr>
+
+
+            <!-- =================================================
+                 2
+            ================================================== -->
+
+            <tr>
+
+                <td class="num">2</td>
+
+                <td class="point">
+                    После проверки цементного моста
+                </td>
+
+                <td>
+                    Результат проверки состояния
+                    цементного моста.
+                </td>
+
+                <td class="criteria">
+                    Мост выдерживает предусмотренную нагрузку.
+                    При отрицательном результате дальнейшие
+                    действия согласованы.
+                </td>
+
+                <td>
+                    <div class="status">
+                        <label>
+                            <input type="checkbox">
+                            Штатно
+                        </label>
+                        <label>
+                            <input type="checkbox">
+                            Внимание
+                        </label>
+                        <label>
+                            <input type="checkbox">
+                            Критическое
+                        </label>
+                    </div>
+                </td>
+
+                <td class="action">
+                    Зафиксировать результат.
+                    При отрицательном признаке — эскалация.
+                </td>
+
+                <td class="notes-cell">
+                    <textarea class="notes"
+                        placeholder="Нагрузка, время, давление, результат..."></textarea>
+                </td>
+
+            </tr>
+
+
+            <!-- =================================================
+                 3
+            ================================================== -->
+
+            <tr>
+
+                <td class="num">3</td>
+
+                <td class="point">
+                    Срезка / направленное бурение цемента
+                </td>
+
+                <td>
+                    Признаки формирования нового ствола
+                    и ухода от материнского.
+                </td>
+
+                <td class="criteria">
+                    Оцениваются совместно: изменение нагрузки,
+                    реактивного момента, перепада давления,
+                    характера шлама и поведения траектории.
+                </td>
+
+                <td>
+                    <div class="status">
+                        <label>
+                            <input type="checkbox">
+                            Штатно
+                        </label>
+                        <label>
+                            <input type="checkbox">
+                            Внимание
+                        </label>
+                        <label>
+                            <input type="checkbox">
+                            Критическое
+                        </label>
+                    </div>
+                </td>
+
+                <td class="action">
+                    Не делать вывод по одному индикатору.
+                    Сопоставить совокупность признаков.
+                </td>
+
+                <td class="notes-cell">
+                    <textarea class="notes"
+                        placeholder="Признаки, режим, комментарии..."></textarea>
+                </td>
+
+            </tr>
+
+
+            <!-- =================================================
+                 4
+            ================================================== -->
+
+            <tr>
+
+                <td class="num">4</td>
+
+                <td class="point">
+                    Окончание РЦМ м
+                </td>
+
+                <td>
+                    Подтверждение формирования
+                    самостоятельного направления ствола.
+                </td>
+
+                <td class="criteria">
+                    Имеются устойчивые признаки направления,
+                    отличного от материнского ствола.
+                </td>
+
+                <td>
+                    <div class="status">
+                        <label>
+                            <input type="checkbox">
+                            Штатно
+                        </label>
+                        <label>
+                            <input type="checkbox">
+                            Внимание
+                        </label>
+                        <label>
+                            <input type="checkbox">
+                            Критическое
+                        </label>
+                    </div>
+                </td>
+
+                <td class="action">
+                    Зафиксировать момент окончания РЦМ.
+                    Оценить косвенные признаки успешной срезки:
+                     более 50 % породы в шламе.
+                     При подтверждении признаков согласовать
+                      дальнейшие работы с технологической службой.
+                </td>
+
+                <td class="notes-cell">
+                    <textarea class="notes"
+                        placeholder="Глубина, режим, признаки..."></textarea>
+                </td>
+
+            </tr>
+
+
+            <!-- =================================================
+                 5
+            ================================================== -->
+
+            <tr>
+
+                <td class="num">5</td>
+
+                <td class="point">
+                    Первый замер 1803 м
+                </td>
+
+                <td>
+                    Фактическое пространственное
+                    положение нового ствола.
+                </td>
+
+                <td class="criteria">
+                    Сравнить Δзенит, Δазимут, смещение N/E
+                    и расстояние центр–центр относительно
+                    материнского ствола.
+                </td>
+
+                <td>
+                    <div class="status">
+                        <label>
+                            <input type="checkbox">
+                            Штатно
+                        </label>
+                        <label>
+                            <input type="checkbox">
+                            Внимание
+                        </label>
+                        <label>
+                            <input type="checkbox">
+                            Критическое
+                        </label>
+                    </div>
+                </td>
+
+                <td class="action">
+                    Подтвердить расхождения по замерам
+                    и оценить  дальнейшию тенденцию.
+                </td>
+
+                <td class="notes-cell">
+                    <textarea class="notes"
+                        placeholder="Зенит, азимут, N/E, расстояние..."></textarea>
+                </td>
+
+            </tr>
+
+
+            <!-- =================================================
+                 6
+            ================================================== -->
+
+            <tr>
+
+                <td class="num">6</td>
+
+                <td class="point">
+                    Каждый 2 м после 1803 м
+                </td>
+
+                <td>
+                    Тенденция расхождения от
+                    материнского ствола.
+                </td>
+
+                <td class="criteria">
+                    Расстояние и/или пространственное расхождение
+                    устойчиво увеличиваются в требуемом направлении,
+                    без тенденции возврата к материнскому стволу.
+                </td>
+
+                <td>
+                    <div class="status">
+                        <label>
+                            <input type="checkbox">
+                            Штатно
+                        </label>
+                        <label>
+                            <input type="checkbox">
+                            Внимание
+                        </label>
+                        <label>
+                            <input type="checkbox">
+                            Критическое
+                        </label>
+                    </div>
+                </td>
+
+                <td class="action">
+                    Контролировать тенденцию.
+                    При ухудшении — предупредить о риске в Группе ЦСБ/РС Бурение
+                    Запрос содержание описания шлама содержание порода/цемент
+                </td>
+
+                <td class="notes-cell">
+                    <textarea class="notes"
+                        placeholder="Динамика расхождения..."></textarea>
+                </td>
+
+            </tr>
+
+
+            <!-- =================================================
+                 7
+            ================================================== -->
+
+            <tr>
+
+                <td class="num">7</td>
+
+                <td class="point">
+                    Перед увеличением WOB / ROP
+                </td>
+
+                <td>
+                    Достаточность подтверждения выхода
+                    из материнского ствола.
+                </td>
+
+                <td class="criteria">
+                    Учитываются ΔЗУ, реактивный момент,
+                    ΔP, характер шлама, замеры траектории
+                    и динамика расстояния центр–центр.
+                </td>
+
+                <td>
+                    <div class="status">
+                        <label>
+                            <input type="checkbox">
+                            Штатно
+                        </label>
+                        <label>
+                            <input type="checkbox">
+                            Внимание
+                        </label>
+                        <label>
+                            <input type="checkbox">
+                            Критическое
+                        </label>
+                    </div>
+                </td>
+
+                <td class="action">
+                    При достаточном подтверждении —
+                    рекомендовать переход на следующий режим.
+                </td>
+
+                <td class="notes-cell">
+                    <textarea class="notes"
+                        placeholder="WOB, ROP, ΔP, момент, замеры..."></textarea>
+                </td>
+
+            </tr>
+
+
+            <!-- =================================================
+                 8
+            ================================================== -->
+
+            <tr>
+
+                <td class="num">8</td>
+
+                <td class="point">
+                    Перед переходом на нормальное бурение
+                </td>
+
+                <td>
+                    Стабильность нового ствола.
+                </td>
+
+                <td class="criteria">
+                    Совокупность признаков:
+                    выход в породу + реактивный момент +
+                    WOB + перепад давления + расхождение
+                    по замерам + центр–центр ≥ 0,5 м.
+                </td>
+
+                <td>
+                    <div class="status">
+                        <label>
+                            <input type="checkbox">
+                            Штатно
+                        </label>
+                        <label>
+                            <input type="checkbox">
+                            Внимание
+                        </label>
+                        <label>
+                            <input type="checkbox">
+                            Критическое
+                        </label>
+                    </div>
+                </td>
+
+                <td class="action">
+                    Подтвердить переход на штатный режим
+                    либо выдать дополнительную рекомендацию.
+                </td>
+
+                <td class="notes-cell">
+                    <textarea class="notes"
+                        placeholder="Подтверждение, расчёт, рекомендация..."></textarea>
+                </td>
+
+            </tr>
+
+
+            <!-- =================================================
+                 9
+            ================================================== -->
+
+            <tr>
+
+                <td class="num">9</td>
+
+                <td class="point">
+                    Проходка интервала срезки
+                </td>
+
+                <td>
+                    Риск возврата КНБК
+                    в материнский ствол.
+                </td>
+
+                <td class="criteria">
+                    Контролировать направление траектории,
+                    тенденцию расхождения и соответствие
+                    плановой интенсивности набора / поворота.
+                </td>
+
+                <td>
+                    <div class="status">
+                        <label>
+                            <input type="checkbox">
+                            Штатно
+                        </label>
+                        <label>
+                            <input type="checkbox">
+                            Внимание
+                        </label>
+                        <label>
+                            <input type="checkbox">
+                            Критическое
+                        </label>
+                    </div>
+                </td>
+
+                <td class="action">
+                    При признаках возврата — немедленно
+                    передать аналитическую рекомендацию.
+                </td>
+
+                <td class="notes-cell">
+                    <textarea class="notes"
+                        placeholder="Тенденция, интенсивность, прогноз..."></textarea>
+                </td>
+
+            </tr>
+
+
+            <!-- =================================================
+                 10
+            ================================================== -->
+
+            <tr>
+
+                <td class="num">10</td>
+
+                <td class="point">
+                    После выхода из интервала
+                </td>
+
+                <td>
+                    Итог операции и качество
+                    сформированного ствола.
+                </td>
+
+                <td class="criteria">
+                    Подтверждена стабильная сепарация
+                    от материнского ствола и соответствие
+                    дальнейшей траектории программе.
+                </td>
+
+                <td>
+                    <div class="status">
+                        <label>
+                            <input type="checkbox">
+                            Штатно
+                        </label>
+                        <label>
+                            <input type="checkbox">
+                            Внимание
+                        </label>
+                        <label>
+                            <input type="checkbox">
+                            Критическое
+                        </label>
+                    </div>
+                </td>
+
+                <td class="action">
+                    Зафиксировать результат и закрыть
+                    контроль операции срезки.
+                </td>
+
+                <td class="notes-cell">
+                    <textarea class="notes"
+                        placeholder="Итог, фактическая траектория, замечания..."></textarea>
+                </td>
+
+            </tr>
+
+        </tbody>
+
+    </table>
+
+</div>
+
+
+<!-- =====================================================
+     ЗАКЛЮЧЕНИЕ
+====================================================== -->
+
+<div class="summary">
+
+    <div class="summary-title">
+        ИТОГОВОЕ ЗАКЛЮЧЕНИЕ ЦСБ
+    </div>
+
+    <div class="summary-grid">
+
+        <div class="summary-cell">
+            <span class="summary-label">
+                Результат срезки
+            </span>
+
+            <textarea
+                placeholder="Выход из материнского ствола подтверждён / не подтверждён"></textarea>
+        </div>
+
+        <div class="summary-cell">
+            <span class="summary-label">
+                Рекомендация ЦСБ
+            </span>
+
+            <textarea
+                placeholder="Режим / дальнейшие действия"></textarea>
+        </div>
+
+        <div class="summary-cell">
+            <span class="summary-label">
+                Ответственный / дата
+            </span>
+
+            <textarea
+                placeholder="ФИО, дата, время"></textarea>
+        </div>
+
+    </div>
+
+</div>
+
+
+<div class="footer-principle">
+
+    <strong>Принцип принятия решения:</strong>
+    ЦСБ выдаёт рекомендацию на основании совокупности фактических признаков,
+    данных инклинометрии и прогнозируемой траектории. Единичный признак
+    не является достаточным основанием для подтверждения выхода из материнского ствола.
+
+</div>
+```
+
+</div>
+
+<!-- =========================================================
+     JAVASCRIPT
+========================================================= -->
+
+<script>
+
+const STORAGE_KEY = 'csb_srezka_checklist_v3';
+
+const fields = document.querySelectorAll(
+    'input, textarea, select'
+);
+
+
+/* =========================================================
+   СОХРАНЕНИЕ
+========================================================= */
+
+function save() {
+
+    const data = {};
+
+    fields.forEach((el, index) => {
+
+        data[index] = {
+            type: el.type || el.tagName,
+            value: el.value,
+            checked: el.checked
+        };
+
+    });
+
+    try {
+
+        localStorage.setItem(
+            STORAGE_KEY,
+            JSON.stringify(data)
+        );
+
+        alert(
+            'Данные чек-листа сохранены в браузере.'
+        );
+
+    } catch (error) {
+
+        alert(
+            'Не удалось сохранить данные в браузере.'
+        );
+
+    }
+}
+
+
+/* =========================================================
+   ЗАГРУЗКА
+========================================================= */
+
+function load() {
+
+    try {
+
+        const raw =
+            localStorage.getItem(STORAGE_KEY);
+
+        if (!raw) {
+            return;
+        }
+
+        const data = JSON.parse(raw);
+
+        fields.forEach((el, index) => {
+
+            if (!data[index]) {
+                return;
+            }
+
+            if (el.type === 'checkbox') {
+
+                el.checked =
+                    Boolean(data[index].checked);
+
+            } else {
+
+                el.value =
+                    data[index].value || '';
+
+            }
+
+        });
+
+    } catch (error) {
+
+        console.warn(
+            'Не удалось загрузить сохранённые данные.',
+            error
+        );
+
+    }
+
+}
+
+
+/* =========================================================
+   АВТОСОХРАНЕНИЕ
+========================================================= */
+
+fields.forEach(el => {
+
+    el.addEventListener(
+        'change',
+        () => {
+
+            const data = {};
+
+            fields.forEach((field, index) => {
+
+                data[index] = {
+                    type: field.type || field.tagName,
+                    value: field.value,
+                    checked: field.checked
+                };
+
+            });
+
+            try {
+
+                localStorage.setItem(
+                    STORAGE_KEY,
+                    JSON.stringify(data)
+                );
+
+            } catch (error) {
+
+                console.warn(
+                    'Автосохранение недоступно.'
+                );
+
+            }
+
+        }
+    );
+
+});
+
+
+/* =========================================================
+   ОЧИСТКА
+========================================================= */
+
+function clearForm() {
+
+    if (
+        !confirm(
+            'Очистить все введённые данные, статусы и примечания?'
+        )
+    ) {
+        return;
+    }
+
+    fields.forEach(el => {
+
+        if (el.type === 'checkbox') {
+
+            el.checked = false;
+
+        } else {
+
+            el.value =
+                el.defaultValue || '';
+
+        }
+
+    });
+
+    try {
+
+        localStorage.removeItem(
+            STORAGE_KEY
+        );
+
+    } catch (error) {
+
+        console.warn(
+            'Не удалось очистить сохранённые данные.'
+        );
+
+    }
+
+}
+
+
+/* =========================================================
+   ЭКСПОРТ ПРИМЕЧАНИЙ
+========================================================= */
+
+function exportNotes() {
+
+    let out =
+        'ЛИСТ КОНТРОЛЯ  ЦСБ — ОПЕРАЦИЯ СРЕЗКА С ЦЕМЕНТНОГО МОСТА\n\n';
+
+
+    /* -----------------------------
+       Данные шапки
+    ----------------------------- */
+
+    const infoInputs =
+        document.querySelectorAll(
+            '.info-input'
+        );
+
+    const infoLabels =
+        document.querySelectorAll(
+            '.info-label'
+        );
+
+    out += 'ОБЩИЕ ДАННЫЕ\n';
+
+    infoInputs.forEach((input, index) => {
+
+        const label =
+            infoLabels[index]
+                ? infoLabels[index].innerText.trim()
+                : '';
+
+        out +=
+            `${label}: ${input.value || 'не указано'}\n`;
+
+    });
+
+    out += '\n';
+
+
+    /* -----------------------------
+       Контрольные пункты
+    ----------------------------- */
+
+    const rows =
+        document.querySelectorAll(
+            '.checklist tbody tr'
+        );
+
+    rows.forEach(row => {
+
+        const number =
+            row.cells[0]
+                .innerText
+                .trim();
+
+        const point =
+            row.cells[1]
+                .innerText
+                .trim();
+
+        const note =
+            row.querySelector('textarea')
+                ?.value
+                .trim();
+
+        const checks = [
+            ...row.querySelectorAll(
+                'input[type="checkbox"]'
+            )
+        ]
+        .filter(
+            checkbox => checkbox.checked
+        )
+        .map(
+            checkbox =>
+                checkbox.parentElement
+                    .innerText
+                    .trim()
+        );
+
+
+        out +=
+            `${number}. ${point}\n`;
+
+        out +=
+            `Статус: ${
+                checks.length
+                    ? checks.join(', ')
+                    : 'не указан'
+            }\n`;
+
+        out +=
+            `Примечание: ${
+                note || 'нет'
+            }\n\n`;
+
+    });
+
+
+    /* -----------------------------
+       Итог
+    ----------------------------- */
+
+    out += '\nИТОГОВОЕ ЗАКЛЮЧЕНИЕ ЦСБ\n';
+
+    const summaryTextareas =
+        document.querySelectorAll(
+            '.summary textarea'
+        );
+
+    const summaryLabels =
+        document.querySelectorAll(
+            '.summary-label'
+        );
+
+    summaryTextareas.forEach((textarea, index) => {
+
+        const label =
+            summaryLabels[index]
+                ? summaryLabels[index]
+                    .innerText
+                    .trim()
+                : '';
+
+        out +=
+            `${label}: ${
+                textarea.value.trim() || 'нет'
+            }\n`;
+
+    });
+
+
+    /* -----------------------------
+       Создание TXT
+    ----------------------------- */
+
+    const blob =
+        new Blob(
+            [out],
+            {
+                type:
+                    'text/plain;charset=utf-8'
+            }
+        );
+
+    const url =
+        URL.createObjectURL(blob);
+
+    const a =
+        document.createElement('a');
+
+    a.href = url;
+
+    a.download =
+        'Примечания_ЦСБ_срезка.txt';
+
+    document.body.appendChild(a);
+
+    a.click();
+
+    document.body.removeChild(a);
+
+    URL.revokeObjectURL(url);
+
+}
+
+
+/* =========================================================
+   ЗАПУСК
+========================================================= */
+
+load();
+
+</script>
+
+</body>
+</html>
+add Чек-лист_ЦСБ_срезка_HTML.html
